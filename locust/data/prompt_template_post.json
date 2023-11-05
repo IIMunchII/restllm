@@ -1,0 +1,22 @@
+{
+    "name": "EditPythonCodePrompt",
+    "description": "Prompt to edit python code according to Clean Code principles.",
+    "language": {
+      "iso639_3": "eng"
+    },
+    "tags": [
+      "Zero-shot Prompting"
+    ],
+    "arguments": [
+      {
+        "name": "python_code",
+        "type": "str"
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "Please edit this python code to follow Clean Code best pratices: \"{{ python_code }}\""
+      }
+    ]
+  }

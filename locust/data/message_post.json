@@ -1,0 +1,9 @@
+{
+    "role": "user",
+    "content": "Can you write a function in Python that adds two numbers together?",
+    "name": "Alice",
+    "function_call": {
+      "name": "get_weather_status",
+      "args": {}
+    }
+  }

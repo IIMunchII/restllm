@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "restllm"
+version = "0.1.0"
+description = "This repository is a prototype for a simple REST API to interact and build Chat interfaces or other prompt based interfaces for llms."
+authors = ["Jonas Høgh Kyhse-Andersen <jonash@email.fo>"]
+packages = [{ include = "restllm", from = "src" }]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
+locust = "^2.17.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+redis = "^5.0.0"
+fastapi = "^0.103.1"
+pydantic-settings = "^2.0.3"
+pydantic = { extras = ["email"], version = "^2.4.1" }
+uvicorn = "^0.23.2"
+cryptography = "^41.0.4"
+jinja2 = "^3.1.2"
+litellm = "^0.1.820"
+iso639-lang = "^2.1.0"
+
+[tool.poetry.scripts]
+redisctl = 'restllm.cli:cli'
