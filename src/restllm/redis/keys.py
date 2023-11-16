@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from .. import models
+from ..models.authentication import UserWithPasswordHash
 
 # IMPORTANT: This mapping is like a table definition for data in Redis. Do not alter the value of the key
 # It is however possible to alter the classname without issues, however, the same values for those classes will apply going forward.
@@ -17,6 +18,8 @@ model_to_key_mapping = {
     models.CompletionParametersWithMeta: "CompletionParameters",
     models.UserProfile: "UserProfile",
     models.UserProfileWithMeta: "UserProfile",
+    models.User: "User",
+    UserWithPasswordHash: "User",
 }
 
 

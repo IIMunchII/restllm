@@ -5,9 +5,12 @@ import click
 import redis
 import redis.exceptions
 
-from .redis.index import (create_index_on_meta_model,
-                          get_class_from_class_name, get_meta_model_schema,
-                          string_to_class_mapping)
+from .redis.index import (
+    create_index_on_meta_model,
+    get_class_from_class_name,
+    get_meta_model_schema,
+    string_to_class_mapping,
+)
 from .settings import settings
 
 
@@ -94,6 +97,7 @@ def connection_count(redis_url: str):
         sys.stdout.write(f"\rCurrent connection count: {connection_count - 1}")
         sys.stdout.flush()
         time.sleep(1)
+
 
 if __name__ == "__main__":
     cli()

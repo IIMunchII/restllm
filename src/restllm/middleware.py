@@ -2,24 +2,7 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from .dependencies import get_redis_client
-from .models.base import User
 import datetime
-
-
-class UserSessionMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        test_user = User(
-            id="munch",
-            first_name="Jonas",
-            last_name="Høgh",
-            email="jonash@email.fo",
-        )
-        session_cookie = request.cookies.get("session_cookie", test_user)
-        if session_cookie:
-            request.state.user = session_cookie
-        else:
-            request.state.user = None
-        return await call_next(request)
 
 
 class AccessLogMiddleware(BaseHTTPMiddleware):
@@ -35,8 +18,9 @@ class AccessLogMiddleware(BaseHTTPMiddleware):
                 "access_log_stream",
                 {
                     "path": request.url.path,
-                    "timestamp": datetime.datetime.utcnow().timestamp(),
-                    "user": "munch",
+                    "timestamp": datetime.datetime.now(
+                        tz=datetime.timezone.utc
+                    ).timestamp(),
                 },
             )
             return await call_next(request)

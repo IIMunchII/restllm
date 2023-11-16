@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from .dependencies import shutdown, startup
-from .middleware import AccessLogMiddleware, UserSessionMiddleware
+from .middleware import AccessLogMiddleware
 from .routers import (
     chats,
     events,
@@ -9,6 +9,7 @@ from .routers import (
     completion_parameters,
     users,
     functions,
+    authentication,
 )
 
 app = FastAPI(
@@ -27,6 +28,6 @@ app.include_router(prompts.router, prefix="/v1")
 app.include_router(completion_parameters.router, prefix="/v1")
 app.include_router(users.router, prefix="/v1")
 app.include_router(functions.router, prefix="/v1")
+app.include_router(authentication.router, prefix="/v1")
 
-app.add_middleware(UserSessionMiddleware)
 app.add_middleware(AccessLogMiddleware)

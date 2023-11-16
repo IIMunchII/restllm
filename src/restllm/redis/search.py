@@ -2,6 +2,7 @@ import json
 
 import redis.asyncio as redis
 from redis.commands.search.query import Query
+from ..models import User
 
 from .index import get_index_key
 from .queries import (
@@ -23,7 +24,7 @@ async def search_index(
 async def list_instances(
     redis_client: redis.Redis,
     class_name: str,
-    owner: str,
+    owner: User,
     offset: int | None = None,
     limit: int | None = None,
     sorting_field: SortingField | None = None,

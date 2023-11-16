@@ -12,7 +12,7 @@ class SortingField(StrEnum):
 def create_privat_query(
     owner: User,
 ) -> Query:
-    return Query(f"@owner:{owner.id}").dialect(3)
+    return Query(f"@owner:[{owner.id} {owner.id}]").dialect(3)
 
 
 def add_pagination_to_query(

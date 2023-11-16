@@ -1,12 +1,12 @@
 import redis.asyncio as redis
 import redis.exceptions
-from fastapi import APIRouter, Depends, Request, Response, status
+from fastapi import APIRouter, Depends, Response, status
 
 from ..dependencies import (
     get_redis_client,
-    get_user,
     build_get_new_class_user_key,
     build_get_class_user_key,
+    get_user,
 )
 from ..exceptions import ObjectNotFoundException, ObjectAlreadyExistsException
 from ..models import UserProfile, UserProfileWithMeta, User
@@ -19,8 +19,8 @@ router = APIRouter(
 
 
 @router.get("", response_model=User)
-async def get_user_profile(request: Request):
-    return get_user(request)
+async def get_token_data(current_user: User = Depends(get_user)):
+    return current_user
 
 
 @router.get("/profile", response_model=UserProfileWithMeta)
@@ -77,7 +77,6 @@ async def update_user_profile(
 
 @router.delete("/profile", status_code=204)
 async def delete_user_profile(
-    request: Request,
     redis_client: redis.Redis = Depends(get_redis_client),
     key: str = Depends(build_get_class_user_key(UserProfile)),
 ):

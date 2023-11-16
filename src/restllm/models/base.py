@@ -1,4 +1,5 @@
 import datetime
+
 from typing import Any, Optional
 
 from pydantic import BaseModel, Field, EmailStr, computed_field
@@ -24,9 +25,7 @@ class UserProfile(BaseModel):
 
 
 class User(BaseModel):
-    id: str = Field(
-        description="Unique identifier for a given user", exclude=True, frozen=True
-    )
+    id: int = Field(gt=0, examples=[1, 2, 3], frozen=True)
     first_name: str = Field(
         description="First name of the user", examples=["Alice"], frozen=True
     )
@@ -64,7 +63,7 @@ class Datetime(BaseModel):
 class MetaModel(BaseModel):
     id: int = Field(gt=0, examples=[1, 2, 3])
     class_name: str
-    owner: str
+    owner: int
     object: Any
     created_at: Datetime = Field(default_factory=Datetime)
     updated_at: Datetime = Field(default_factory=Datetime)

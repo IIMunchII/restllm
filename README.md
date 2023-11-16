@@ -5,6 +5,11 @@ The repository contains a functioning REST API based on LiteLLM and the interfac
 
 The API is userbased and has a dummy-middleware that creates a User class object. Later this will change to a different implementation.
 
+## Setup development environment
+```bash
+poetry install
+```
+
 ## Run the server
 Run `docker compose build` to build the local image. Then run `docker compose up` to run the application.
 

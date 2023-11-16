@@ -35,7 +35,7 @@ def get_class_from_class_name(class_name: str) -> dict[str, Type]:
 
 def get_meta_model_schema():
     return (
-        TextField("$.owner", as_name="owner"),
+        NumericField("$.owner", as_name="owner"),
         NumericField("$.id", as_name="id"),
         NumericField("$.created_at.timestamp", as_name="created_at"),
         NumericField("$.updated_at.timestamp", as_name="updated_at"),

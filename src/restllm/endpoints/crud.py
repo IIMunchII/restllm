@@ -2,7 +2,7 @@ from typing import Optional, Type
 
 import redis.asyncio as redis
 import redis.exceptions
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from pydantic import BaseModel
 
 from ..dependencies import (
@@ -12,6 +12,7 @@ from ..dependencies import (
     build_get_instance_key,
 )
 from ..exceptions import IndexNotImplemented, ObjectNotFoundException
+from ..models import User
 from ..redis.commands import (
     create_instance,
     delete_instance,
@@ -20,7 +21,6 @@ from ..redis.commands import (
 )
 from ..redis.keys import get_class_name
 from ..redis.search import SortingField, list_instances
-from ..types import paths
 from ..types import queries
 
 
@@ -42,14 +42,14 @@ def build_get_instance_endpoint(cls: Type):
 
 def build_create_instance_endpoint(cls: Type):
     async def create_instance_endpoint(
-        request: Request,
         instance: cls,
         redis_client: redis.Redis = Depends(get_redis_client),
         new_key: tuple[str, int] = Depends(build_get_new_instance_key(cls)),
+        user: User = Depends(get_user),
     ):
         created, instance = await create_instance(
             redis_client=redis_client,
-            owner=get_user(request),
+            owner=user,
             instance=instance,
             key=new_key[0],
             instance_id=new_key[1],
@@ -101,18 +101,18 @@ def build_delete_instance_endpoint(cls: Type):
 
 def build_list_instances_endpoint(cls: Type):
     async def list_instances_endpoint(
-        request: Request,
         offset: Optional[int] = queries.offset_query,
         limit: Optional[int] = queries.limit_query,
         sorting_field: Optional[SortingField] = queries.sorting_field_query,
         ascending: Optional[bool] = queries.ascending_query,
         redis_client: redis.Redis = Depends(get_redis_client),
+        user: User = Depends(get_user),
     ):
         try:
             return await list_instances(
                 redis_client,
                 class_name=get_class_name(cls),
-                owner=get_user(request),
+                owner=user,
                 offset=offset,
                 limit=limit,
                 sorting_field=sorting_field,
