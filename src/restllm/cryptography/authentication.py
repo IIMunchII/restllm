@@ -5,7 +5,10 @@ from jose import jwt
 from passlib.context import CryptContext
 from ..settings import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=[settings.password_hash_algorithm],
+    deprecated="auto",
+)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="v1/authentication/token")
 

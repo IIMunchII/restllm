@@ -3,8 +3,9 @@ from pydantic import Field, RedisDsn, HttpUrl
 
 
 class Settings(BaseSettings):
-    secret_key: str = "09u23lkansld920394u23,njsldk"
+    secret_key: str = "insecure-09u23lkansld920394u23,njsldk"
     jwt_algorithm: str = "HS256"
+    password_hash_algorithm: str = "argon2"
     access_token_expire_minutes: int = 120
     refresh_token_expire_minutes: int = 240
     shared_object_expire: int = Field(
