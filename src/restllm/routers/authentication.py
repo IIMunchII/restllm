@@ -45,7 +45,12 @@ async def login_for_access_token(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
+    if not user.verified:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Account is not yet verified",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     access_token, refresh_token = await create_tokens(user.get_user_data())
 
     return {
