@@ -12,8 +12,16 @@ from .models.share import ShareableObject
 from .redis.keys import get_class_name
 from .redis.commands import get_instance
 from .cryptography.authentication import verify_password
-from .models.authentication import UserWithPasswordHash, UserSignUp, get_user_email_key
-from .exceptions import InvalidCredentialsException, TokenExpiredException
+from .models.authentication import (
+    UserWithPasswordHash,
+    UserSignUp,
+    ChangePassword,
+    get_user_email_key,
+)
+from .exceptions import (
+    InvalidCredentialsException,
+    TokenExpiredException,
+)
 from .cryptography.authentication import oauth2_scheme
 from .settings import settings
 
@@ -65,6 +73,8 @@ async def get_user_with_password_hash(
     redis_client: redis.Redis = Depends(get_redis_client),
 ) -> dict | None:
     user_id: bytes = await redis_client.get(get_user_email_key(email))
+    if not user_id:
+        raise InvalidCredentialsException
     user_instance = await get_instance(
         redis_client,
         key=f"{get_class_name(User)}:{user_id.decode()}",
@@ -99,12 +109,26 @@ async def signup_form(
     last_name: str = Form(...),
     email: EmailStr = Form(...),
     password: SecretStr = Form(...),
+    confirm_password: SecretStr = Form(...),
 ) -> UserSignUp:
     return UserSignUp(
         first_name=first_name,
         last_name=last_name,
         email=email,
         password=password,
+        confirm_password=confirm_password,
+    )
+
+
+async def change_password_form(
+    old_password: SecretStr = Form(...),
+    new_password: SecretStr = Form(...),
+    confirm_new_password: SecretStr = Form(...),
+) -> ChangePassword:
+    return ChangePassword(
+        old_password=old_password,
+        new_password=new_password,
+        confirm_new_password=confirm_new_password,
     )
 
 

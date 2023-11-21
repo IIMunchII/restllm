@@ -1,4 +1,11 @@
-from pydantic import BaseModel, EmailStr, SecretStr, computed_field
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    SecretStr,
+    computed_field,
+    model_validator,
+    ValidationError,
+)
 from ..models.base import User
 
 from ..cryptography.authentication import get_password_hash
@@ -26,6 +33,7 @@ class UserSignUp(BaseModel):
     last_name: str
     email: EmailStr
     password: SecretStr
+    confirm_password: SecretStr
 
     def create_user(self, id: str) -> UserWithPasswordHash:
         new_user = {
@@ -38,7 +46,32 @@ class UserSignUp(BaseModel):
 
         return UserWithPasswordHash(**new_user)
 
+    @model_validator(mode="after")
+    def check_passwords_match(self) -> "ChangePassword":
+        pw1 = self.password
+        pw2 = self.confirm_password
+        if pw1 is not None and pw2 is not None and pw1 != pw2:
+            raise ValueError("Both fields for new password must match")
+        return self
+
     @computed_field(return_type=str)
     @property
     def email_key(self) -> str:
         return get_user_email_key(self.email)
+
+
+class ChangePassword(BaseModel):
+    old_password: SecretStr
+    new_password: SecretStr
+    confirm_new_password: SecretStr
+
+    @model_validator(mode="after")
+    def check_passwords_match(self) -> "ChangePassword":
+        pw1 = self.new_password
+        pw2 = self.confirm_new_password
+        if pw1 is not None and pw2 is not None and pw1 != pw2:
+            raise ValueError("Both fields for new password must match")
+        return self
+
+    def get_new_password_hash(self) -> str:
+        return get_password_hash(self.new_password.get_secret_value())

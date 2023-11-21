@@ -11,14 +11,21 @@ from .routers import (
     functions,
     authentication,
 )
+from .exceptions import validation_exception_handler
+from pydantic import ValidationError
 
 app = FastAPI(
     title="REST LLM",
     description="REST API for interacting with Large Language Models. Runs on RedisStack (https://redis.io/docs/about/about-stack/) and LiteLLM (https://litellm.ai). The REST API is a work in progress",
 )
 
+# Event handlers
 app.add_event_handler("startup", startup)
 app.add_event_handler("shutdown", shutdown)
+
+# Exception handlers
+app.add_exception_handler(ValidationError, validation_exception_handler)
+
 
 # V1 of API
 app.include_router(chats.router, prefix="/v1")

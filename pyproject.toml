@@ -28,6 +28,7 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 python-multipart = "^0.0.6"
 argon2-cffi = "^23.1.0"
+aiosmtplib = "^3.0.1"
 
 [tool.poetry.scripts]
 redisctl = 'restllm.cli:cli'

@@ -30,6 +30,9 @@ services:
       - OLLAMA_BASE_URL=http://localhost:11434
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - COHERE_API_KEY=${COHERE_API_KEY}
+      - EMAIL_USERNAME=${EMAIL_USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - EMAIL_HOSTNAME=${EMAIL_HOSTNAME}
 
   schematest:
     image: schemathesis/schemathesis:stable

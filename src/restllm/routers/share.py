@@ -1,5 +1,5 @@
 import redis.asyncio as redis
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from ..cryptography.keys import get_fernet
 from ..cryptography.secure_url import (
@@ -45,14 +45,14 @@ async def get_shared_object(
     fernet = await get_fernet(redis_client)
     if not payload_is_valid(payload, signature):
         raise HTTPException(
-            status_code=400,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Invalid request",
         )
     token: str = decrypt_payload(fernet, payload).get("token")
     instance = await redis_client.json().get(token)
     if not instance:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Shared object has expired",
         )
     return instance

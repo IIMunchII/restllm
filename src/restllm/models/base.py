@@ -33,6 +33,11 @@ class User(BaseModel):
         description="Last name of the user", examples=["Wonderer"], frozen=True
     )
     email: EmailStr = Field(description="Valid email for the user", frozen=True)
+    verified: bool = Field(
+        description="Wether a users email is verified or not",
+        frozen=True,
+        default=False,
+    )
 
     @computed_field(return_type=str)
     @property

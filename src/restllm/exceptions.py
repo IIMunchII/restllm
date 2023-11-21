@@ -1,6 +1,8 @@
 from typing import Type
 
-from fastapi import status, HTTPException
+from fastapi import status, HTTPException, Request
+from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 from .redis.keys import get_class_name
 
 
@@ -44,3 +46,19 @@ class TokenExpiredException(HTTPException):
             detail="Token expired",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+
+async def validation_exception_handler(request: Request, exc: ValidationError):
+    errors = exc.errors()
+    formatted_errors = [
+        {
+            "loc": error["loc"],
+            "msg": error["msg"],
+            "type": error["type"],
+        }
+        for error in errors
+    ]
+    return JSONResponse(
+        status_code=422,
+        content={"detail": formatted_errors},
+    )

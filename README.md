@@ -28,7 +28,8 @@ Below are some of the progressions in the repo
 | Endpoints for premade function calls            | ✅ Done     |
 | Events endpoint for listening to events         | 🟥 In progress |
 | User authentication                             | 🟥 In progress |
-| Reset password and email verification           | 🟥 In progress |
+| Reset password                                  | 🟥 In progress |
+| Email verification                              | ✅ Done     |
 | Setup GitHub actions pipeline                   | 🟥 Coming |
 | Acceptance tests and unittests                  | 🟥 Coming |
 | Helm Chart for deployment on Kubernetes         | 🟥 Coming |
