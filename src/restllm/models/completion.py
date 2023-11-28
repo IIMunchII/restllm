@@ -17,9 +17,9 @@ class ModelTypes(StrEnum):
 class CompletionParameters(BaseModel):
     model: ModelTypes
     functions: Optional[list[FunctionName]] = Field(
-        default=[],
+        default=None,
         description="A list of functions that the model may use to generate JSON inputs. Each function should have the following properties",
-        examples=[["SearchArticlesFunction"]],
+        examples=[None,["SearchArticlesFunction"]],
     )
     temperature: Optional[Union[float, None]] = Field(
         default=0.2,
@@ -28,16 +28,19 @@ class CompletionParameters(BaseModel):
         description="The sampling temperature to be used, between 0 and 2. Higher values like 0.8 produce more random outputs, while lower values like 0.2 make outputs more focused and deterministic.",
     )
     top_p: Optional[Union[float, None]] = Field(
-        description="An alternative to sampling with temperature. It instructs the model to consider the results of the tokens with top_p probability. For example, 0.1 means only the tokens comprising the top 10% probability mass are considered."
+        default=None,
+        description="An alternative to sampling with temperature. It instructs the model to consider the results of the tokens with top_p probability. For example, 0.1 means only the tokens comprising the top 10% probability mass are considered.",
+        examples=[None, 0.1]
     )
     n: Optional[int] = Field(
         default=None,
         description="The number of chat completion choices to generate for each input message.",
-        examples=[None],
+        examples=[None, 2],
     )
     stop: Optional[Union[str, list[str], None]] = Field(
         default=None,
         description="Up to 4 sequences where the API will stop generating further tokens.",
+        examples=[None]
     )
     max_tokens: Optional[int] = Field(
         default=None,
@@ -50,6 +53,7 @@ class CompletionParameters(BaseModel):
         examples=[None],
     )
     frequency_penalty: Optional[Union[float, None]] = Field(
+        default=None,
         description="It is used to penalize new tokens based on their frequency in the text so far.",
         examples=[None],
     )
@@ -61,12 +65,12 @@ class CompletionParameters(BaseModel):
     user: Optional[str] = Field(
         default=None,
         description="A unique identifier representing your end-user. This can help OpenAI to monitor and detect abuse.",
-        examples=[None],
+        examples=[None, "Alice"],
     )
     function_call: Optional[Union[str, dict[str, Any]]] = Field(
+        default=None,
         description="Controls how the model responds to function calls.",
-        default="auto",
-        examples=["auto", None],
+        examples=[None, "auto"],
     )
 
 

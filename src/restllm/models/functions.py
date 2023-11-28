@@ -18,8 +18,7 @@ class MissingFunctionDescription(ValueError):
 
 class FunctionCall(BaseModel):
     name: str = Field(
-        description="Name of the function to call",
-        examples=["get_weather_status"],
+        description="Name of the function to call"
     )
     args: dict[str, Any]
 
