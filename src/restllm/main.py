@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from .dependencies import shutdown, startup
 from .middleware import AccessLogMiddleware
 from .routers import (

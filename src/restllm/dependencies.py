@@ -8,7 +8,7 @@ from pydantic import SecretStr, EmailStr
 from .models.base import User
 from .settings import settings
 from .types import paths
-from .models.share import ShareableObject
+from .models.share import ShareableClass
 from .redis.keys import get_class_name
 from .redis.commands import get_instance
 from .cryptography.authentication import verify_password
@@ -83,7 +83,7 @@ async def get_user_with_password_hash(
 
 
 async def get_shareable_key(
-    object: ShareableObject,
+    object: ShareableClass,
     id: int = paths.id_path,
     user: User = Depends(get_user),
 ):

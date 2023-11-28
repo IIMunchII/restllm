@@ -20,6 +20,7 @@ class Settings(BaseSettings):
         default="/share",
         description="APIRouter prefix for the 'share' route",
     )
+    base_url: HttpUrl = "http://localhost:8000"
     redis_dsn: RedisDsn = "redis://localhost:6379/0"
     ollama_base_url: HttpUrl = "http://localhost:11434"
     email_username: str = ""

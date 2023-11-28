@@ -9,7 +9,7 @@ from ..cryptography.secure_url import (
 )
 from ..dependencies import get_redis_client, get_shareable_key
 from ..models import MetaModel
-from ..models.share import ShareableObject, ShareableObject
+from ..models.share import ShareableObject
 from ..redis.commands import copy_instance
 from ..settings import settings
 from ..types import paths
@@ -20,7 +20,7 @@ router = APIRouter(
 )
 
 
-@router.get("/{class_name}/{id}/generate")
+@router.get("/{object}/{id}/generate")
 async def generate_shared_object(
     redis_client: redis.Redis = Depends(get_redis_client),
     shareable_key: str = Depends(get_shareable_key),
