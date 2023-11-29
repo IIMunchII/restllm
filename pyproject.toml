@@ -15,7 +15,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-redis = "^5.0.0"
+redis = {extras = ["hiredis"], version = "^5.0.1"}
 fastapi = "^0.103.1"
 pydantic-settings = "^2.0.3"
 pydantic = { extras = ["email"], version = "^2.4.1" }
@@ -31,4 +31,4 @@ argon2-cffi = "^23.1.0"
 aiosmtplib = "^3.0.1"
 
 [tool.poetry.scripts]
-redisctl = 'restllm.cli:cli'
+restllm = 'restllm.cli:cli'

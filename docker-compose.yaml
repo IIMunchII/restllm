@@ -2,14 +2,13 @@ version: '3.8'
 
 services:
   redis:
-    image: redis/redis-stack:latest
+    image: redis/redis-stack:7.2.0-v6
     ports:
       - "6379:6379"
     volumes:
       - ./redis-data:/data
     environment:
-      - REDIS_APPENDONLY=yes
-      - REDIS_APPENDFSYNC=everysec
+      REDIS_ARGS: "--appendonly yes"
 
   restllm:
     build:
@@ -26,13 +25,13 @@ services:
     depends_on:
       - redis
     environment:
-      - REDIS_DSN=redis://redis:6379/0
-      - OLLAMA_BASE_URL=http://localhost:11434
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - COHERE_API_KEY=${COHERE_API_KEY}
-      - EMAIL_USERNAME=${EMAIL_USERNAME}
-      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
-      - EMAIL_HOSTNAME=${EMAIL_HOSTNAME}
+      REDIS_DSN: redis://redis:6379/0
+      OLLAMA_BASE_URL: http://localhost:11434
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      COHERE_API_KEY: ${COHERE_API_KEY}
+      EMAIL_USERNAME: ${EMAIL_USERNAME}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      EMAIL_HOSTNAME: ${EMAIL_HOSTNAME}
 
   schematest:
     image: schemathesis/schemathesis:stable
