@@ -1,6 +1,6 @@
 import redis.asyncio as redis
 
-from litellm import acompletion, completion
+from litellm import acompletion
 
 from ..models import ChatMessage, ChatWithMeta
 from ..redis.commands import append_chat_message
@@ -12,7 +12,6 @@ async def chat_acompletion_call(
     key: str,
 ):
     kwargs = chat_with_meta.object.dump_json_for_completion()
-
     response = acompletion(
         **kwargs,
         stream=True,

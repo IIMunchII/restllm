@@ -1,3 +1,5 @@
+import litellm
+
 from typing import Type
 
 from fastapi import status, HTTPException, Request
@@ -61,4 +63,19 @@ async def validation_exception_handler(request: Request, exc: ValidationError):
     return JSONResponse(
         status_code=422,
         content={"detail": formatted_errors},
+    )
+
+async def litellm_badrequest_handler(
+    request: Request, exception: litellm.exceptions.BadRequestError
+):
+    return JSONResponse(
+        status_code=exception.status_code,
+        content={
+            "detail": {
+                "message": exception.message,
+                "error_type": type(exception).__name__,
+                "model": exception.model,
+                "llm_provider": exception.llm_provider,
+            }
+        },
     )

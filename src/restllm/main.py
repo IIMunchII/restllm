@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from .dependencies import shutdown, startup
 from .middleware import AccessLogMiddleware
 from .routers import (
@@ -11,8 +11,9 @@ from .routers import (
     functions,
     authentication,
 )
-from .exceptions import validation_exception_handler
+from .exceptions import validation_exception_handler, litellm_badrequest_handler
 from pydantic import ValidationError
+import litellm
 
 app = FastAPI(
     title="REST LLM",
@@ -25,7 +26,7 @@ app.add_event_handler("shutdown", shutdown)
 
 # Exception handlers
 app.add_exception_handler(ValidationError, validation_exception_handler)
-
+app.add_exception_handler(litellm.exceptions.BadRequestError, litellm_badrequest_handler)
 
 # V1 of API
 app.include_router(chats.router, prefix="/v1")
